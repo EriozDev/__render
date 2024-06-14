@@ -6,8 +6,7 @@ author 'CFX SHOP'
 lua54 'yes'
 
 client_script {
-	'client/client/*.lua',
-	'client/libs/*.lua'
+	'client/*.lua',
 }
 
             
