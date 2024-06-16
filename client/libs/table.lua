@@ -91,17 +91,25 @@ function CONTAINER:__debug(table)
 end
 
 -- Exemple d'utilisation
--- local myTable, TableUID = CONTAINER:new({}, 1, 2, 3)
--- print("Before insert: ")
--- CONTAINER:__debug(CONTAINER.Create[TableUID])
-
--- CONTAINER:insert(TableUID, "newKey", "newValue")
--- print("After insert: ")
--- CONTAINER:__debug(CONTAINER.Create[TableUID])
-
--- CONTAINER:remove(TableUID, "newKey")
--- print("After remove: ")
--- CONTAINER:__debug(CONTAINER.Create[TableUID])
-
--- CONTAINER:delete(TableUID)
--- print("After delete: ", CONTAINER.Create[TableUID])
+--local myTable, TableUID = CONTAINER:new("myTable", 1, 2, 3)
+--print("Before insert: ")
+--CONTAINER:__debug(CONTAINER.Create[TableUID])
+--
+--CONTAINER:insert(TableUID, "newKey", "newValue")
+--print("After insert: ")
+--CONTAINER:__debug(CONTAINER.Create[TableUID])
+--
+--CONTAINER:remove(TableUID, "newKey")
+--print("After remove: ")
+--CONTAINER:__debug(CONTAINER.Create[TableUID])
+--
+--CONTAINER:delete(TableUID)
+--print("After delete: ", CONTAINER.Create[TableUID])
+--
+---- Get UID by name
+--local uid = CONTAINER:getUIDByName("myTable")
+--if uid then
+--    print("UID for 'myTable': ", uid)
+--else
+--    print("'myTable' not found")
+--end
