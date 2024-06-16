@@ -7,11 +7,8 @@ local __instance = {
     __type = 'container'
 }
 
-setmetatable({}, __instance)
-
 function CONTAINER:new(containerTable, ...)
-    local self = {}
-    setmetatable(self, { __index = CONTAINER })
+    local self = setmetatable({}, __instance)
     self.contain = containerTable or {}
     local values = table.pack(...)
 
@@ -23,6 +20,15 @@ function CONTAINER:new(containerTable, ...)
     local TableUID = CONTAINER.id
     CONTAINER.Create[TableUID] = self.contain
     return self.contain, TableUID
+end
+
+function CONTAINER:getTableUniqueIdByName(containerName)
+    for uid, container in pairs(CONTAINER.Create) do
+        if container.name == containerName then
+            return uid
+        end
+    end
+    return nil
 end
 
 function CONTAINER:delete(TableUniqueId)
