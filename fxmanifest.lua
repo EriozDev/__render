@@ -1,7 +1,7 @@
 fx_version 'bodacious'
 games { 'gta5' }
 description '__RENDER PROJECT'
-author 'CFX SHOP'
+author 'Erioz'
 
 lua54 'yes'
 
