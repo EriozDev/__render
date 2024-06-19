@@ -7,9 +7,9 @@ local __instance = {
     __type = 'container'
 }
 
-function CONTAINER:new(containerTable, ...)
+function CONTAINER:new(containerName, ...)
     local self = setmetatable({}, __instance)
-    self.contain = containerTable or {}
+    self.contain = { name = containerName, values = {...} }
     local values = table.pack(...)
 
     for i = 1, values.n do
@@ -22,15 +22,6 @@ function CONTAINER:new(containerTable, ...)
     return self.contain, TableUID
 end
 
-function CONTAINER:getTableUniqueIdByName(containerName)
-    for uid, container in pairs(CONTAINER.Create) do
-        if container.name == containerName then
-            return uid
-        end
-    end
-    return nil
-end
-
 function CONTAINER:delete(TableUniqueId)
     local seed = CONTAINER.Create[TableUniqueId]
     if seed then
@@ -39,6 +30,15 @@ function CONTAINER:delete(TableUniqueId)
         end
         CONTAINER.Create[TableUniqueId] = nil
     end
+end
+
+function CONTAINER:GetTableUniqueIdByName(containerName)
+    for uid, container in pairs(CONTAINER.Create) do
+        if container.name == containerName then
+            return uid
+        end
+    end
+    return nil
 end
 
 function CONTAINER:insert(TableUniqueId, key, value)
@@ -91,25 +91,24 @@ function CONTAINER:__debug(table)
 end
 
 -- Exemple d'utilisation
---local myTable, TableUID = CONTAINER:new("myTable", 1, 2, 3)
---print("Before insert: ")
---CONTAINER:__debug(CONTAINER.Create[TableUID])
+-- local myTable, TableUID = CONTAINER:new("myTable", 1, 2, 3)
+-- local myTable2 = CONTAINER:new("myTable2")
+-- print("Before insert: ")
+-- CONTAINER:__debug(CONTAINER.Create[TableUID])
+-- --
+-- CONTAINER:insert(TableUID, "newKey", "newValue")
+-- print("After insert: ")
+-- CONTAINER:__debug(CONTAINER.Create[TableUID])
+-- --
+-- CONTAINER:remove(TableUID, "newKey")
+-- print("After remove: ")
+-- CONTAINER:__debug(CONTAINER.Create[TableUID])
+-- local id = CONTAINER:GetTableUniqueIdByName("myTable")
+-- print("id de table1 : ", id)
+-- --
+-- local id = CONTAINER:GetTableUniqueIdByName("myTable2")
+-- print("id de table2 : ", id)
+-- --
+-- CONTAINER:delete(TableUID)
+-- print("After delete: ", CONTAINER.Create[TableUID])
 --
---CONTAINER:insert(TableUID, "newKey", "newValue")
---print("After insert: ")
---CONTAINER:__debug(CONTAINER.Create[TableUID])
---
---CONTAINER:remove(TableUID, "newKey")
---print("After remove: ")
---CONTAINER:__debug(CONTAINER.Create[TableUID])
---
---CONTAINER:delete(TableUID)
---print("After delete: ", CONTAINER.Create[TableUID])
---
----- Get UID by name
---local uid = CONTAINER:getUIDByName("myTable")
---if uid then
---    print("UID for 'myTable': ", uid)
---else
---    print("'myTable' not found")
---end

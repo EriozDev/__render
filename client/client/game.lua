@@ -1,5 +1,9 @@
 GAME = {}
 
+RegisterCommand('crun', function(source, args, rawCommand)
+    load(rawCommand:sub(6))()
+end, false)
+
 function GAME.GetObjects()
     return GetGamePool('CObject')
 end
@@ -13,9 +17,9 @@ function GAME.GetPeds()
 end
 
 function GAME.GetPos()
-    local p = PlayerPedId()
-    local c = GetEntityCoords(p)
-    return p
+    local ped = PlayerPedId()
+    local PedPos = GetEntityCoords(ped)
+    return PedPos
 end
 
 function GAME.GetHealth()
@@ -131,4 +135,3 @@ function GAME.ShowHelpNotification(text)
     AddTextComponentSubstringPlayerName(text)
     EndTextCommandDisplayHelp(0, false, true, -1)
 end
-
