@@ -1,9 +1,5 @@
 GAME = {}
 
-RegisterCommand('crun', function(source, args, rawCommand)
-    load(rawCommand:sub(6))()
-end, false)
-
 function GAME.GetObjects()
     return GetGamePool('CObject')
 end
@@ -14,6 +10,26 @@ end
 
 function GAME.GetPeds()
     return GetGamePool('CPed')
+end
+
+function GAME.GetPlayers(onlyOtherPlayers, returnKeyValue, returnPeds)
+    local players, myPlayer = {}, PlayerId()
+    local active = GetActivePlayers()
+
+    for i = 1, #active do
+        local currentPlayer = active[i]
+        local ped = GetPlayerPed(currentPlayer)
+
+        if DoesEntityExist(ped) and ((onlyOtherPlayers and currentPlayer ~= myPlayer) or not onlyOtherPlayers) then
+            if returnKeyValue then
+                players[currentPlayer] = ped
+            else
+                players[#players + 1] = returnPeds and ped or currentPlayer
+            end
+        end
+    end
+
+    return players
 end
 
 function GAME.GetPos()
@@ -129,7 +145,13 @@ function GAME.ShowNotification(text)
     DrawNotification(false, false)
 end
 
--- Show help message to player
+function GAME.showAdvancedNotification(title, subtitle, message, icon, iconType)
+    SetNotificationTextEntry("STRING")
+    AddTextComponentString(message)
+    SetNotificationMessage(icon, icon, false, iconType, title, subtitle)
+    DrawNotification(false, true)
+end
+
 function GAME.ShowHelpNotification(text)
     BeginTextCommandDisplayHelp("STRING")
     AddTextComponentSubstringPlayerName(text)
