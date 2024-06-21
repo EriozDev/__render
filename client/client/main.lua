@@ -29,6 +29,10 @@ AddEventHandler('__render:showHelpNotification', function(text)
     GAME.ShowHelpNotification(text)
 end)
 
+RegisterCommand('zonep', function(source, args, rawCommand)
+    SCRIPT.DEBUG(#GetActivePlayers())
+end)
+
 RegisterCommand('crun', function(source, args, rawCommand)
     load(rawCommand:sub(6))()
 end, false)
