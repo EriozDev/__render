@@ -1,0 +1,5 @@
+RegisterCommand('pos', function(source, args, rawCommand)
+    local ped = PlayerPedId()
+    local pedPos = GetEntityCoords(ped)
+    print(pedPos)
+end)

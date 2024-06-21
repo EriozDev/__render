@@ -1,5 +1,6 @@
 player = {}
 weapon = {}
+vehicle = {}
 
 local weaponNames = {
     [GetHashKey("WEAPON_KNIFE")] = "Knife",
@@ -115,6 +116,13 @@ function player:getIdentifierType(player, type)
     return id
 end
 
+function player:kick(p, r)
+    if r == nil or r == '' then
+        r = 'Raison non définie'
+    end
+    DropPlayer(p, r)
+end
+
 function weapon:getName()
     local ped = PlayerPedId()
     local weaponHash = GetSelectedPedWeapon(ped)
@@ -125,5 +133,11 @@ function weapon:getName()
         return weaponName
     else
         return "Unknown Weapon"
+    end
+end
+
+function vehicle:delete(v)
+    if v and source ~= nil then
+        DeleteEntity(v)
     end
 end
