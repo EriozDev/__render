@@ -48,3 +48,32 @@ AddEventHandler('__render:onJoin', function()
         end
     end)
 end)
+
+
+local function getPlayerPositionFromDB(license, callback)
+    MySQL.Async.fetchAll('SELECT pos_x, pos_y, pos_z FROM render_accounts WHERE license = @license', {
+        ['@license'] = license
+    }, function(result)
+        if result[1] then
+            callback(result[1].pos_x, result[1].pos_y, result[1].pos_z)
+        else
+            callback(nil)
+        end
+    end)
+end
+
+RegisterNetEvent('playerConnecting')
+AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
+    local source = source
+    local license = GetPlayerIdentifierByType(source, 'license')
+
+    getPlayerPositionFromDB(license, function(pos_x, pos_y, pos_z)
+        if pos_x and pos_y and pos_z then
+            TriggerClientEvent('receivePlayerPosition', source, pos_x, pos_y, pos_z)
+        else
+            TriggerClientEvent('receivePlayerPosition', source, CONFIG.DefaultCoords)
+        end
+    end)
+end)
+
+
