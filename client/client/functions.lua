@@ -52,6 +52,8 @@ function __RENDER.SpawnPlayer(model, coords, heading)
 
         SetModelAsNoLongerNeeded(pedModel)
 
+        TriggerEvent('playerSpawned', coords)
+
     end)
 end
 
