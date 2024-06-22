@@ -1,0 +1,17 @@
+CREATE TABLE render_accounts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    account_id VARCHAR(24) NOT NULL UNIQUE,
+    license VARCHAR(255) NOT NULL UNIQUE,
+    name VARCHAR(255) NOT NULL,
+    discord VARCHAR(255),
+    player_group VARCHAR(50),
+    date_connected DATE NOT NULL,
+    time_connected TIME NOT NULL,
+    pos_x FLOAT NOT NULL,
+    pos_y FLOAT NOT NULL,
+    pos_z FLOAT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+);
+
+

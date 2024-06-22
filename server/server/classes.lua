@@ -123,6 +123,18 @@ function player:kick(p, r)
     DropPlayer(p, r)
 end
 
+function player:getGroup(p)
+    local i = GetPlayerIdentifierByType(p, 'license')
+    MySQL.Async.fetchAll('SELECT * FROM render_accounts WHERE license = @license', {
+        ['@license'] = i
+    }, function(result)
+        if result[1] then
+            local dbPlayer = result[1]
+            return dbPlayer.player_group
+        end
+    end)
+end
+
 function weapon:getName()
     local ped = PlayerPedId()
     local weaponHash = GetSelectedPedWeapon(ped)
