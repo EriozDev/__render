@@ -9,3 +9,15 @@ function Utils.StringForm(string)
         string
     )
 end
+
+function Utils.StringValues(string)
+    return ('[Values : %u]'):format(
+        string
+    )
+end
+
+function Utils.StringDebug(string)
+    return ('[%u = {}]'):format(
+        string
+    )
+end

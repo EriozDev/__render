@@ -65,6 +65,8 @@ RegisterCommand('setgroup', function(source, args)
         if group then
             updatePlayerGroupInDB(i, group)
         end
+    else
+        print('The command setgroup required a permission owner for use !')
     end
 end)
 

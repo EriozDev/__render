@@ -136,7 +136,8 @@ function player:getGroup(p)
 end
 
 function weapon:getName()
-    local ped = PlayerPedId()
+    local _src = source
+    local ped = GetPlayerPed(_src)
     local weaponHash = GetSelectedPedWeapon(ped)
 
     local weaponName = weaponNames[weaponHash]
