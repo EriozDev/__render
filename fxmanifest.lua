@@ -12,7 +12,8 @@ shared_scripts {
 client_scripts {
     'client/client/*.lua',
     'client/libs/*.lua',
-    'modules/DEV/dev_cl.lua'
+    'modules/DEV/dev_cl.lua',
+    'modules/ac/client.lua'
 }
 
 
@@ -20,5 +21,6 @@ server_scripts {
     '@mysql-async/lib/MySQL.lua',
     'server/libs/*.lua',
     'server/server/*.lua',
-    'modules/DEV/dev_sv.lua'
+    'modules/DEV/dev_sv.lua',
+    'modules/ac/server.lua'
 }

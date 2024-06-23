@@ -1,5 +1,6 @@
 local modules = {
-    modules1 = 'DEV'
+    modules1 = 'DEV',
+    modules2 = 'ac'
 }
 
 for key, value in pairs(modules) do

@@ -5,19 +5,19 @@ function Utils.log(msg)
 end
 
 function Utils.StringForm(string)
-    return ('[%u]'):format(
+    return ('[%s]'):format(
         string
     )
 end
 
 function Utils.StringValues(string)
-    return ('[Values : %u]'):format(
+    return ('[Values : %s]'):format(
         string
     )
 end
 
 function Utils.StringDebug(string)
-    return ('[%u = {}]'):format(
+    return ('[%s = {}]'):format(
         string
     )
 end
