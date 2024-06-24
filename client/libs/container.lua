@@ -7,7 +7,7 @@ local __instance = {
     __type = 'container'
 }
 
-function CONTAINER:new(containerName, ...)
+function CONTAINER.New(containerName, ...)
     local self = setmetatable({}, __instance)
     self.contain = { name = containerName, values = {...} }
     local values = table.pack(...)
@@ -93,8 +93,8 @@ if DEV then
 end
 
 -- Exemple d'utilisation
--- local myTable, TableUID = CONTAINER:new("myTable", 1, 2, 3)
--- local myTable2 = CONTAINER:new("myTable2")
+-- local myTable, TableUID = CONTAINER.New("myTable", 1, 2, 3)
+-- local myTable2 = CONTAINER.New("myTable2")
 -- print("Before insert: ")
 -- CONTAINER:__debug(CONTAINER.Create[TableUID])
 -- --
