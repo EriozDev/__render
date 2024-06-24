@@ -1,5 +1,7 @@
 CONFIG = {}
 
+CONFIG.DEVMOD = true
+
 CONFIG.ServerName = 'EriozServer'
 
 CONFIG.DefaultCoords = vec3(-267.08, -960.24, 30.22)

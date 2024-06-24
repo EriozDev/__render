@@ -14,6 +14,8 @@ SPlayer.Health = GetEntityHealth(SPlayer.Ped)
 SPlayer.Armor = GetPedArmour(SPlayer.Ped)
 SPlayer.Shooting = IsPedShooting(SPlayer.Ped)
 
+DEV = CONFIG.DEVMOD
+
 RegisterNetEvent('__render:showNotification')
 AddEventHandler('__render:showNotification', function(text)
     GAME.ShowNotification(text)

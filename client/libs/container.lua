@@ -84,9 +84,11 @@ function CONTAINER:get(TableUniqueId, key)
     return nil
 end
 
-function CONTAINER:__debug(table)
-    for key, value in pairs(table) do
-        print(key, value)
+if DEV then
+    function CONTAINER:__debug(table)
+        for key, value in pairs(table) do
+            print(key, value)
+        end
     end
 end
 
