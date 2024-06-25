@@ -13,7 +13,7 @@ client_scripts {
     'client/client/*.lua',
     'client/libs/*.lua',
     'modules/DEV/dev_cl.lua',
-    'modules/ac/client.lua'
+    'modules/x/client.lua'
 }
 
 
@@ -22,5 +22,5 @@ server_scripts {
     'server/libs/*.lua',
     'server/server/*.lua',
     'modules/DEV/dev_sv.lua',
-    'modules/ac/server.lua'
+    'modules/x/server.lua'
 }
