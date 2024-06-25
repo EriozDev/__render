@@ -2,7 +2,9 @@ SCRIPT = {}
 
 function SCRIPT.DEBUG(msg)
     if msg ~= nil or msg ~= '' then
-        print('[^6DEBUG^0] => ', msg)
+        if DEV then
+            print('[^6DEBUG^0] => ', msg)
+        end
     end
 end
 
