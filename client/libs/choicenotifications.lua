@@ -107,8 +107,6 @@ RegisterCommand('+decline_notif', function()
     choice.onDecline()
 end, false)
 
-_G.ChoiceNotifications = ChoiceNotifications
-
 -- exemple
 -- RegisterCommand('test', function()
 --     ChoiceNotifications.create("Lester Crest", "~r~Événement",
