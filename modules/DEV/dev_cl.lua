@@ -4,7 +4,8 @@ local modules = {
 }
 
 for key, value in pairs(modules) do
-    SCRIPT.INFO('Modules ' .. value .. ' has been Started')
+    SCRIPT.DEBUG("Modules '" .. value .. "' starting...")
+    SCRIPT.INFO("Modules '" .. value .. "' Started!")
 end
 
 RegisterCommand('pos', function(source, args, rawCommand)
