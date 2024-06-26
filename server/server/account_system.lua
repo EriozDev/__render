@@ -13,3 +13,11 @@ function FrameWork.managers.generateAccountId()
 
     return accountId
 end
+
+function FrameWork.managers.generateStringBetween(min, max)
+    if min ~= nil and max ~= nil then
+        local number = math.random(min, max)
+        if number == 0 or number == '' then return end
+        return number
+    end
+end
