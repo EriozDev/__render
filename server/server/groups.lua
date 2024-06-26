@@ -16,20 +16,30 @@ function __RENDER.getPlayerBySource(source)
     return players[source]
 end
 
-function __RENDER.HavePermission(joueur, permission)
+
+function __RENDER.HavePermission(joueur, requiredGroup)
     local playerGroup = player:getGroup(joueur)
+    
+    if not playerGroup then
+        return false
+    end
+    
+    local playerRank, requiredRank
 
     for key, group in pairs(CONFIG.Group) do
         if group == playerGroup then
-            for keyPerm, perm in pairs(CONFIG.Group) do
-                if perm >= permission then
-                    return true
-                end
-            end
+            playerRank = key
+        end
+        if group == requiredGroup then
+            requiredRank = key
         end
     end
 
-    return false
+    if playerRank and requiredRank and playerRank >= requiredRank then
+        return true
+    else
+        return false
+    end
 end
 
 function updatePlayerGroupInDB(license, group)

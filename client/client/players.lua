@@ -12,33 +12,20 @@ Citizen.CreateThread(function()
     end
 end)
 
+RegisterNetEvent('playerSpawn')
+AddEventHandler('playerSpawn', function(spawnPos)
+    local ped = PlayerPedId()
+    SetEntityCoordsNoOffset(ped, spawnPos.x, spawnPos.y, spawnPos.z, false, false, false, true)
+    NetworkResurrectLocalPlayer(spawnPos.x, spawnPos.y, spawnPos.z, true, true, false)
+    SetPlayerInvincible(ped, false)
+    TriggerEvent('playerSpawned', spawnPos.x, spawnPos.y, spawnPos.z)
+end)
+
+
 Citizen.CreateThread(function()
     while true do
-        while not FrameWork.PlayerLoaded do
-            Citizen.Wait(100)
-        end
-
-        local playerPed = PlayerPedId()
-
-        if playerPed and playerPed ~= -1 then
-            __RENDER.SpawnPlayer('np_n_freemode_01', CONFIG.DefaultCoords, 0.0)
-        end
-    end
-end)
-
-RegisterNetEvent('receivePlayerPosition')
-AddEventHandler('receivePlayerPosition', function(pos_x, pos_y, pos_z)
-    if pos_x and pos_y and pos_z then
-        FrameWork.PlayerData.Position = vector3(pos_x, pos_y, pos_z)
-    else
-        print("Could not retrieve position from the database.")
-    end
-end)
-
-AddEventHandler('playerSpawned', function()
-    if FrameWork.PlayerData.Position then
-        SetEntityCoords(PlayerPedId(), FrameWork.PlayerData.Position)
-    else
-        print("No position data available.")
+        Wait(10000)
+        local pos = GetEntityCoords(PlayerPedId())
+        TriggerServerEvent('__render:position', pos)
     end
 end)

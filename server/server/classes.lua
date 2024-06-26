@@ -123,17 +123,26 @@ function player:kick(p, r)
     DropPlayer(p, r)
 end
 
-function player:getGroup(p)
-    local i = GetPlayerIdentifierByType(p, 'license')
-    MySQL.Async.fetchAll('SELECT * FROM render_accounts WHERE license = @license', {
-        ['@license'] = i
-    }, function(result)
-        if result[1] then
-            local dbPlayer = result[1]
-            return dbPlayer.player_group
-        end
-    end)
+function player:getGroup(player)
+    local license = GetPlayerIdentifierByType(player, 'license')
+    
+    if not license then
+        print("No identifier found for type 'license'")
+        return nil
+    end
+
+    local result = MySQL.Sync.fetchAll('SELECT player_group FROM render_accounts WHERE license = @license', {
+        ['@license'] = license
+    })
+
+    if result[1] then
+        return result[1].player_group
+    else
+        print("No player found with license: " .. license)
+        return nil
+    end
 end
+
 
 function weapon:getName()
     local _src = source
