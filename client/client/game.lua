@@ -8,7 +8,21 @@ function GAME.GetVehicles()
     return GetGamePool('CVehicle')
 end
 
-function GAME.GetPeds()
+function GAME.GetPeds(onlyOtherPeds)
+    if onlyOtherPeds then
+        local peds = GetGamePool('CPed')
+        local playerPedId = PlayerPedId()
+
+        for i = 1, #peds do
+            if peds[i] == playerPedId then
+                table.remove(peds, i)
+                break
+            end
+        end
+
+        return peds
+    end
+
     return GetGamePool('CPed')
 end
 
@@ -30,6 +44,92 @@ function GAME.GetPlayers(onlyOtherPlayers, returnKeyValue, returnPeds)
     end
 
     return players
+end
+
+function GAME.GetClosestEntity(entities, coords, modelFilter, filterFn, playerEntities)
+    local entitiesLen = #entities
+    local closestEntity, closestEntityDistance = -1, -1
+    coords = coords or GetEntityCoords(PlayerPedId())
+
+    if modelFilter then
+        local fillteredEntities, fillteredEntitiesLen = {}, 0
+
+        for i = 1, entitiesLen do
+            if modelFilter[GetEntityModel(entities[i])] then
+                fillteredEntitiesLen = fillteredEntitiesLen + 1
+                fillteredEntities[fillteredEntitiesLen] = entities[i]
+            end
+        end
+
+        entities = fillteredEntities
+        entitiesLen = fillteredEntitiesLen
+    end
+
+    if filterFn then
+        local fillteredEntities, fillteredEntitiesLen = {}, 0
+
+        for i = 1, entitiesLen do
+            if filterFn(entities[i]) then
+                fillteredEntitiesLen = fillteredEntitiesLen + 1
+                fillteredEntities[fillteredEntitiesLen] = entities[i]
+            end
+        end
+
+        entities = fillteredEntities
+        entitiesLen = fillteredEntitiesLen
+    end
+
+    for i = 1, entitiesLen do
+        local distance = #(coords - GetEntityCoords(entities[i]))
+
+        if closestEntityDistance == -1 or distance < closestEntityDistance then
+            closestEntity, closestEntityDistance = entities[i], distance
+        end
+    end
+
+    if playerEntities then
+        closestEntity = NetworkGetPlayerIndexFromPed(closestEntity)
+    end
+
+    return closestEntity, closestEntityDistance
+end
+
+function GAME.GetClosestObject(coords, modelFilter)
+    return GAME.GetClosestEntity(GAME.GetObjects(), false, coords, modelFilter)
+end
+
+function GAME.GetClosestPed(coords, modelFilter, filterFn)
+    return GAME.GetClosestEntity(GAME.GetPeds(true), coords, modelFilter, filterFn, false)
+end
+
+function GAME.GetClosestPlayer(coords)
+    return GAME.GetClosestEntity(GAME.GetPlayers(), true, coords, nil)
+end
+
+function GAME.GetClosestVehicle(coords, modelFilter)
+    return GAME.GetClosestEntity(GAME.GetVehicles(), false, coords, modelFilter)
+end
+
+function GAME.SetEntityScale(entity, scale)
+    Citizen.CreateThread(function()
+        while true do
+            Wait(0)
+            if DoesEntityExist(entity) then
+                local forward, right, up, at = GetEntityMatrix(entity)
+                forward, right, up = forward * scale, right * scale, up * scale
+                local minDims, maxDims = GetModelDimensions(GetEntityModel(entity))
+                local dim = maxDims - minDims
+                local defaultHeightAbove = dim.z / 2
+                at = at + vector3(0.0, 0.0, defaultHeightAbove * (scale - 1.0))
+
+                print(entity)
+                SetEntityMatrix(entity, forward, right, up, at)
+
+
+                :: continue ::
+            end
+        end
+    end)
 end
 
 function GAME.GetPos()

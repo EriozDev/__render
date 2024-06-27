@@ -1,35 +1,69 @@
-local players = {}
+Pplayers = {}
 
+Pplayers.__index = Pplayers
+Pplayers.playerTable = {}
+
+-- Define Player class
 Player = {}
 Player.__index = Player
 
-function Player.new(source)
+function Player.new(source, UserID)
     local self = setmetatable({}, Player)
     self.source = source
+    self.UserID = UserID
     self.Data = {
         Group = "user"
     }
     return self
 end
 
-function __RENDER.getPlayerBySource(source)
-    return players[source]
+-- Function to create a new player and add to playerTable
+function Pplayers:AddPlayer(source, UserID)
+    local player = Player.new(source, UserID)
+    self.playerTable[source] = player
+    return player
 end
 
-function __RENDER.HavePermission(joueur, permission)
+function Pplayers:RemovePlayer(source)
+    self.playerTable[source] = nil
+end
+
+-- Function to get player by source
+function __RENDER.getPlayerBySource(source)
+    return Pplayers.playerTable[source]
+end
+
+function __RENDER.GetPlayers()
+    local players = {}
+    for source, player in pairs(Pplayers.playerTable) do
+        table.insert(players, source)
+    end
+    return players
+end
+
+function __RENDER.HavePermission(joueur, requiredGroup)
     local playerGroup = player:getGroup(joueur)
+
+    if not playerGroup then
+        return false
+    end
+
+    local playerRank, requiredRank
 
     for key, group in pairs(CONFIG.Group) do
         if group == playerGroup then
-            for keyPerm, perm in pairs(CONFIG.Group) do
-                if perm >= permission then
-                    return true
-                end
-            end
+            playerRank = key
+        end
+        if group == requiredGroup then
+            requiredRank = key
         end
     end
 
-    return false
+    if playerRank and requiredRank and playerRank >= requiredRank then
+        return true
+    else
+        return false
+    end
 end
 
 function updatePlayerGroupInDB(license, group)
@@ -66,7 +100,7 @@ RegisterCommand('setgroup', function(source, args)
             updatePlayerGroupInDB(i, group)
         end
     else
-        print('The command setgroup required a permission owner for use !')
+        print('The command setgroup requires owner permission to use!')
     end
 end)
 
@@ -76,7 +110,15 @@ AddEventHandler('updateGroupDB', function(group)
     updatePlayerGroupInDB(license, group)
 end)
 
-AddEventHandler('playerConnecting', function(playerName, setKickReason, deferrals)
-    local player = Player.new(source)
-    players[source] = player
+AddEventHandler('__render:onJoin', function ()
+    local src = source
+    local userID = GetPlayerIdentifier(src, 'license') -- Assuming license as UserID
+    Pplayers:AddPlayer(src, userID)
+    print('The player ' .. tostring(src) .. ' has been added to the players table with the player instance')
+end)
+
+AddEventHandler('playerDropped', function(reason)
+    local src = source
+    Pplayers:RemovePlayer(src)
+    print('The player ' .. tostring(src) .. ' has been removed from the players table')
 end)

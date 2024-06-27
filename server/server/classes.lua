@@ -123,16 +123,167 @@ function player:kick(p, r)
     DropPlayer(p, r)
 end
 
-function player:getGroup(p)
-    local i = GetPlayerIdentifierByType(p, 'license')
-    MySQL.Async.fetchAll('SELECT * FROM render_accounts WHERE license = @license', {
-        ['@license'] = i
-    }, function(result)
-        if result[1] then
-            local dbPlayer = result[1]
-            return dbPlayer.player_group
+function player:getGroup(player)
+    local license = GetPlayerIdentifierByType(player, 'license')
+
+    if not license then
+        print("No identifier found for type 'license'")
+        return nil
+    end
+
+    local result = MySQL.Sync.fetchAll('SELECT player_group FROM render_accounts WHERE license = @license', {
+        ['@license'] = license
+    })
+
+    if result[1] then
+        return result[1].player_group
+    else
+        print("No player found with license: " .. license)
+        return nil
+    end
+end
+
+function player:getAccountId(player)
+    local license = GetPlayerIdentifierByType(player, 'license')
+
+    if not license then
+        print("No identifier found for type 'license'")
+        return nil
+    end
+
+    local result = MySQL.Sync.fetchAll('SELECT account_id FROM render_accounts WHERE license = @license', {
+        ['@license'] = license
+    })
+
+    if result[1] then
+        return result[1].account_id
+    else
+        print("No player found with license: " .. license)
+        return nil
+    end
+end
+
+function player:getMoneyBank(playerId)
+    local license = GetPlayerIdentifierByType(playerId, 'license')
+
+    if not license then
+        print("No identifier found for type 'license'")
+        return nil
+    end
+
+    local result = MySQL.Sync.fetchAll('SELECT bank FROM render_money WHERE license = @license', {
+        ['@license'] = license
+    })
+
+    if result[1] then
+        return result[1].bank
+    else
+        print("No player found with license: " .. license)
+        return nil
+    end
+end
+
+function player:getMoneyCash(playerId)
+    local license = GetPlayerIdentifierByType(playerId, 'license')
+
+    if not license then
+        print("No identifier found for type 'license'")
+        return nil
+    end
+
+    local result = MySQL.Sync.fetchAll('SELECT cash FROM render_money WHERE license = @license', {
+        ['@license'] = license
+    })
+
+    if result[1] then
+        return result[1].cash
+    else
+        print("No player found with license: " .. license)
+        return nil
+    end
+end
+
+function player:getMoneyDirty(playerId)
+    local license = GetPlayerIdentifierByType(playerId, 'license')
+
+    if not license then
+        print("No identifier found for type 'license'")
+        return nil
+    end
+
+    local result = MySQL.Sync.fetchAll('SELECT dirty FROM render_money WHERE license = @license', {
+        ['@license'] = license
+    })
+
+    if result[1] then
+        return result[1].dirty
+    else
+        print("No player found with license: " .. license)
+        return nil
+    end
+end
+
+function player:addMoneyBank(playerId, newMoney)
+    local oldMoney = self:getMoneyBank(playerId)
+    local license = GetPlayerIdentifierByType(playerId, 'license')
+    
+    if not oldMoney then
+        print("Unable to get old money amount for player: " .. playerId)
+        return
+    end
+
+    local newMoneyx = newMoney + oldMoney
+    MySQL.Async.execute(
+        'UPDATE render_money SET bank = @bank WHERE license = @license',
+        {
+            ['@bank'] = newMoneyx,
+            ['@license'] = license
+        },
+        function(rowsChanged)
         end
-    end)
+    )
+end
+
+function player:addMoneyCash(playerId, newMoney)
+    local oldMoney = self:getMoneyCash(playerId)
+    local license = GetPlayerIdentifierByType(playerId, 'license')
+    
+    if not oldMoney then
+        print("Unable to get old money amount for player: " .. playerId)
+        return
+    end
+
+    local newMoneyx = newMoney + oldMoney
+    MySQL.Async.execute(
+        'UPDATE render_money SET cash = @cash WHERE license = @license',
+        {
+            ['@cash'] = newMoneyx,
+            ['@license'] = license
+        },
+        function(rowsChanged)
+        end
+    )
+end
+
+function player:addMoneyDirty(playerId, newMoney)
+    local oldMoney = self:getMoneyDirty(playerId)
+    local license = GetPlayerIdentifierByType(playerId, 'license')
+    
+    if not oldMoney then
+        print("Unable to get old money amount for player: " .. playerId)
+        return
+    end
+
+    local newMoneyx = newMoney + oldMoney
+    MySQL.Async.execute(
+        'UPDATE render_money SET dirty = @dirty WHERE license = @license',
+        {
+            ['@dirty'] = newMoneyx,
+            ['@license'] = license
+        },
+        function(rowsChanged)
+        end
+    )
 end
 
 function weapon:getName()

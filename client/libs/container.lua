@@ -57,11 +57,7 @@ end
 
 function Container:clear(TableUniqueId)
     local seed = Container.Create[TableUniqueId]
-    if seed then
-        for k in pairs(seed) do
-            seed[k] = nil
-        end
-    end
+    table.wipe(seed)
 end
 
 function Container:update(TableUniqueId, key, newValue)
@@ -89,6 +85,7 @@ if DEV then
         for key, value in pairs(table) do
             print(key, value)
         end
+
     end
 end
 
