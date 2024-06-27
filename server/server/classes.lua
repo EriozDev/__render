@@ -125,7 +125,6 @@ end
 
 function player:getGroup(player)
     local license = GetPlayerIdentifierByType(player, 'license')
-
     if not license then
         print("No identifier found for type 'license'")
         return nil
@@ -285,6 +284,7 @@ function player:addMoneyDirty(playerId, newMoney)
         end
     )
 end
+
 
 function weapon:getName()
     local _src = source

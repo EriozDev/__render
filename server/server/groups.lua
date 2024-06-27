@@ -43,6 +43,12 @@ end
 
 function __RENDER.HavePermission(joueur, requiredGroup)
     local playerGroup = player:getGroup(joueur)
+    
+    if not playerGroup then
+        return false
+    end
+    
+    local playerRank, requiredRank
 
     if not playerGroup then
         return false
