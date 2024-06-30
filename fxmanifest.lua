@@ -19,7 +19,10 @@ client_scripts {
     'modules/admins/client.lua',
     'modules/admins/staffmenu.lua',
     'modules/ac/client.lua',
+<<<<<<< HEAD
     'modules/bans/client.lua',
+=======
+>>>>>>> bdd3a02dc81b251237b231bcfd502317da9c0479
     "shared/libs/RageUI/client/RMenu.lua",
     "shared/libs/RageUI/client/menu/RageUI.lua",
     "shared/libs/RageUI/client/menu/Menu.lua",
@@ -43,8 +46,12 @@ server_scripts {
     'modules/DEV/dev_sv.lua',
     'modules/admins/server.lua',
     'modules/admins/staffmenu_sv.lua',
+<<<<<<< HEAD
     'modules/ac/server.lua',
     'modules/bans/server.lua',
+=======
+    'modules/ac/server.lua'
+>>>>>>> bdd3a02dc81b251237b231bcfd502317da9c0479
     -- 'shared/libs/mysql-async/mysql-async.js',
     -- 'shared/libs/mysql-async/lib/MySQL.lua'
 }
