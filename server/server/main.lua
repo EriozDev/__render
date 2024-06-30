@@ -1,5 +1,4 @@
 FrameWork.db = {}
--- cc
 DEV = CONFIG.DEVMOD
 
 function FrameWork.db.getAllLicenses(callback)
