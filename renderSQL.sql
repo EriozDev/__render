@@ -6,20 +6,29 @@ CREATE TABLE render_accounts (
     discord VARCHAR(255),
     player_group VARCHAR(50),
     date_connected DATE NOT NULL,
-    time_connected TIME NOT NULL,
-    pos_x FLOAT NOT NULL,
-    pos_y FLOAT NOT NULL,
-    pos_z FLOAT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    time_connected TIME NOT NULL
 );
 
-CREATE TABLE render_money (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    account_id VARCHAR(24) NOT NULL UNIQUE,
-    license VARCHAR(255) NOT NULL UNIQUE,
-    name VARCHAR(255) NOT NULL,
-    bank VARCHAR(255) NOT NULL UNIQUE,
-    cash VARCHAR(255) NOT NULL UNIQUE,
-    dirty VARCHAR(255) NOT NULL UNIQUE,
-);
+CREATE TABLE `render_bans` (
+  `banid` varchar(50) COLLATE utf8mb4_bin NOT NULL,
+  `licenseid` varchar(50) COLLATE utf8mb4_bin NOT NULL,
+  `accountid` varchar(25) COLLATE utf8mb4_bin DEFAULT NULL,
+  `targetName` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL,
+  `sourceName` varchar(32) COLLATE utf8mb4_bin DEFAULT NULL,
+  `reason` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `timeat` int NOT NULL,
+  `expiration` int NOT NULL,
+  `permanent` int NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+CREATE TABLE `render_bans_history` (
+  `banid` varchar(50) COLLATE utf8mb4_bin NOT NULL,
+  `licenseid` varchar(50) COLLATE utf8mb4_bin NOT NULL,
+  `accountid` varchar(25) COLLATE utf8mb4_bin DEFAULT NULL,
+  `targetName` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
+  `sourceName` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
+  `reason` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `timeat` int NOT NULL,
+  `expiration` int NOT NULL,
+  `permanent` int NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

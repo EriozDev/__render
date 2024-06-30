@@ -120,11 +120,9 @@ AddEventHandler('__render:onJoin', function ()
     local src = source
     local userID = GetPlayerIdentifier(src, 'license') -- Assuming license as UserID
     Pplayers:AddPlayer(src, userID)
-    print('The player ' .. tostring(src) .. ' has been added to the players table with the player instance')
 end)
 
 AddEventHandler('playerDropped', function(reason)
     local src = source
     Pplayers:RemovePlayer(src)
-    print('The player ' .. tostring(src) .. ' has been removed from the players table')
 end)

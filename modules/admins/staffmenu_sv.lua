@@ -41,7 +41,6 @@ AddEventHandler('__render:onJoin', function()
         return
     end
     TriggerClientEvent("adminmenu:cbPermLevel", source, player:getGroup(source))
-    print(("^1[Admin Menu] ^7Player ^3%s ^7loaded with group ^1%s^7 ! ^7"):format(GetPlayerName(source),player:getGroup(source)))
     players[source] = {
         timePlayed = { 0, 0 },
         rank = player:getGroup(source),

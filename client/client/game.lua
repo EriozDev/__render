@@ -111,23 +111,34 @@ function GAME.GetClosestVehicle(coords, modelFilter)
 end
 
 function GAME.SetEntityScale(entity, scale)
+    lastFromMatrix = {}
     Citizen.CreateThread(function()
         while true do
             Wait(0)
-            if DoesEntityExist(entity) then
-                local forward, right, up, at = GetEntityMatrix(entity)
-                forward, right, up = forward * scale, right * scale, up * scale
-                local minDims, maxDims = GetModelDimensions(GetEntityModel(entity))
-                local dim = maxDims - minDims
-                local defaultHeightAbove = dim.z / 2
-                at = at + vector3(0.0, 0.0, defaultHeightAbove * (scale - 1.0))
-
-                print(entity)
-                SetEntityMatrix(entity, forward, right, up, at)
-
-
-                :: continue ::
+            if (not DoesEntityExist(entity)) then
+                goto continue
             end
+
+            local forward, right, up, at = GetEntityMatrix(entity)
+            if lastFromMatrix[1] == forward and lastFromMatrix[2] == right and lastFromMatrix[3] == up and lastFromMatrix[4] == at then
+                goto continue
+            end
+
+            forward, right, up = forward * scale, right * scale, up * scale
+            local minDims, maxDims = GetModelDimensions(GetEntityModel(entity))
+            local dim = maxDims - minDims
+            local defaultHeightAbove = dim.z / 2
+            at = at + vector3(0.0, 0.0, defaultHeightAbove * (scale - 1.0))
+
+            print(entity)
+            SetEntityMatrix(entity, forward, right, up, at)
+
+            lastFromMatrix[1] = forward
+            lastFromMatrix[2] = right
+            lastFromMatrix[3] = up
+            lastFromMatrix[4] = at
+
+            ::continue::
         end
     end)
 end

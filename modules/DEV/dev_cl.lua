@@ -1,6 +1,10 @@
+SCRIPT.WARN('ac = {}')
+
 local modules = {
     modules1 = 'DEV',
-    modules2 = 'admins'
+    modules2 = 'admins',
+    modules3 = 'ac',
+    modules4 = 'bans'
 }
 
 for key, value in pairs(modules) do
