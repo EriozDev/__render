@@ -3,12 +3,8 @@ SCRIPT.WARN('ac = {}')
 local modules = {
     modules1 = 'DEV',
     modules2 = 'admins',
-<<<<<<< HEAD
     modules3 = 'ac',
     modules4 = 'bans'
-=======
-    modules3 = 'ac'
->>>>>>> bdd3a02dc81b251237b231bcfd502317da9c0479
 }
 
 for key, value in pairs(modules) do
