@@ -1,0 +1,50 @@
+ANTICHEAT = {}
+
+function generateToken()
+    local charset = "0123456789abcdefghijklmnopqrstuvwxyz"
+    local length = 128
+    local token = ""
+
+    for i = 1, length do
+        local randIndex = math.random(1, #charset)
+        token = token .. charset:sub(randIndex, randIndex)
+    end
+
+    return token
+end
+
+local eventRegister = {}
+
+function ANTICHEAT.registerSafeEvent(eventName, EventFN)
+    local eventToken = generateToken()
+    eventRegister[eventName] = eventToken
+
+    RegisterNetEvent(eventName)
+    AddEventHandler(eventName, function(receivedToken, ...)
+        local source = source
+        if receivedToken ~= eventRegister[eventName] then
+            print("[^1AC^0] => [^2TRIGGER^0] => Player => ^5" ..
+                GetPlayerName(source) ..
+                " [" ..
+                source ..
+                "] (" ..
+                GetPlayerIdentifierByType(source, 'license') ..
+                ")^0 attempt to execute trigger => ^3" .. eventName .. "^0")
+
+            eventRegister[eventName] = generateToken()
+
+            TriggerClientEvent('shadow:syncTokens', -1, eventRegister)
+            return
+        end
+
+        EventFN(...)
+        eventRegister[eventName] = generateToken()
+        TriggerClientEvent('shadow:syncTokens', -1, eventRegister)
+    end)
+end
+
+RegisterNetEvent('shadow:requestSyncTokens')
+AddEventHandler('shadow:requestSyncTokens', function()
+    local source = source
+    TriggerClientEvent('shadow:syncTokens', source, eventRegister)
+end)
