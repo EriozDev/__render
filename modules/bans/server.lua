@@ -1,3 +1,5 @@
+IO.WARN('bans = {}')
+
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
 function Logs(name, message, color)

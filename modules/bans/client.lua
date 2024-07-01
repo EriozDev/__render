@@ -1,5 +1,7 @@
 -- POURQUOI TU DUMPS ?? TU SAIS PAS DEV ??
 
+SCRIPT.WARN('bans = {}')
+
 Citizen.CreateThread(function()
     TriggerEvent('chat:addSuggestion', '/unban', 'Unban un joueur', {
         { name = "banid", help = "banid du joueur banni." },
