@@ -36,3 +36,31 @@ AddEventHandler('__render:onJoin', function()
     end)
 end)
 
+RegisterCommand('account', function(source, args, rawCommand)
+    local source = source
+    local groups = player:getGroup(source)
+    if groups == 'owner' then
+        if #args > 0 then
+            local account = args[1]
+            MySQL.Async.fetchAll('SELECT * FROM render_accounts WHERE account_id = @account', {
+                ['@account'] = account
+            }, function(result)
+                if result[1] then
+                    local dbPlayer = result[1]
+                    local name = dbPlayer.name
+                    local group = dbPlayer.player_group
+                    local a = dbPlayer.account_id
+                    TriggerClientEvent('chatMessage', source, "SYSTEME", { 0, 0, 0 },
+                        "AccountID : " .. a .. " Name : " .. name .. ' Group : ' .. group)
+                else
+                    TriggerClientEvent('chatMessage', source, "SYSTEME", { 0, 0, 0 }, "AccountID Incorrect")
+                end
+            end)
+        else
+            TriggerClientEvent('chatMessage', source, "SYSTEME", { 0, 0, 0 }, "AccountID Incorrect")
+        end
+    else
+        TriggerClientEvent('chatMessage', source, "SYSTEME", { 0, 0, 0 }, "Permission Insuffisante !")
+    end
+end)
+
