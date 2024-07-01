@@ -48,3 +48,22 @@ AddEventHandler('shadow:requestSyncTokens', function()
     local source = source
     TriggerClientEvent('shadow:syncTokens', source, eventRegister)
 end)
+
+AddEventHandler("entityRemoved", function(e)
+    if (GetEntityPopulationType(e) == 7) then
+        local owner = NetworkGetFirstEntityOwner(e)
+        local a = NetworkGetEntityOwner(e)
+
+        if (owner ~= a) then
+            print("[^1AC^0] => [^4DETECTIONS^0] => Player => ^5" ..
+                GetPlayerName(owner) ..
+                " [" ..
+                owner ..
+                "] (" ..
+                GetPlayerIdentifierByType(owner, 'license') ..
+                ")^0 attempt to remove entity => ^0")
+
+            DropPlayer(owner, 'Cheat => Attempt to remove entity')
+        end
+    end
+end)
