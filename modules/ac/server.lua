@@ -1,5 +1,17 @@
 ANTICHEAT = {}
 
+AddEventHandler('explosionEvent', function(sender, data)
+    if data.posX == 0.0 or data.posY == 0.0 or data.posZ == 0.0 or data.posZ == -1700.0 or (data.cameraShake == 0.0 and data.damageScale == 0.0 and data.isAudible == false and data.isInvisible == false) then
+        CancelEvent()
+        return
+    else
+        print('[^1AC^0] Joueur : [' ..
+            (sender or '') ..
+            '] ' .. (GetPlayerName(sender) or '') .. ' created an explosion ' .. (json.encode(data) or ''))
+    end
+end)
+
+
 function generateToken()
     local charset = "0123456789abcdefghijklmnopqrstuvwxyz"
     local length = 128
